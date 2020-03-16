@@ -1,0 +1,64 @@
+<script>
+  import mpx from '@mpxjs/core'
+  import apiProxy from '@mpxjs/api-proxy'
+  import './mock/mock.js'
+  import share from './utils/share'
+  mpx.use(apiProxy, { usePromise: true })
+  App({
+    onLaunch: function () {
+    }
+  })
+  mpx.onAppRoute && mpx.onAppRoute((res) => {
+    share(res)
+  })
+</script>
+
+<style lang="less" src="./css/style.less"></style>
+
+<script type="application/json">
+  {
+    "pages": [
+      "./pages/login",
+      "./pages/home",
+      "./pages/mistake",
+      "./pages/check",
+      "./pages/report"
+    ],
+    "window": {
+      "backgroundTextStyle": "dark",
+      "navigationBarBackgroundColor": "#fff",
+      "navigationBarTitleText": "WeChat",
+      "navigationBarTextStyle": "black"
+    },
+    "tabBar": {
+      "backgroundColor": "#1989fa",
+      "color": "#cccccc",
+      "selectedColor": "#ffffff",
+      "list": [
+        {
+          "pagePath": "pages/home",
+          "text": "课表",
+          "iconPath": "images/icon/time.png",
+          "selectedIconPath": "images/icon/time_select.png"
+        },
+        {
+          "pagePath": "pages/mistake",
+          "text": "错题集",
+          "iconPath": "images/icon/mistake.png",
+          "selectedIconPath": "images/icon/mistake_select.png"
+        }
+      ]
+    }
+  }
+</script>
+<script type="application/json" mode="ali">
+  {
+    "pages": [
+     "./pages/login"
+    ],
+    "window": {
+      "navigationBarBackgroundColor": "#fff",
+      "navigationBarTitleText": "mpx备忘清单-ali"
+    }
+  }
+</script>

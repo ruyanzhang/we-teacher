@@ -1,0 +1,40 @@
+<template>
+  <view class="no-data">
+    <image src="../images/no-timeable.png" class="img" mode="widthFix"></image>
+    <view class="text">{{text}}</view>
+  </view>
+</template>
+<script>
+  import { createComponent } from '@mpxjs/core'
+  createComponent({
+    data: {
+    },
+    properties: {
+      text: {
+        type: String,
+        value: ''
+      }
+    },
+    methods: {
+    }
+  })
+</script>
+
+<script type="application/json">
+  {
+    "component": true
+  }
+</script>
+
+<style lang="less">
+  .no-data{
+    padding: 20px 0;
+    text-align: center;
+  }
+  .img{
+    width: 60%;
+  }
+  .text{
+    padding: 10px 0 20px 0;
+  }
+</style>

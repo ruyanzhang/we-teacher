@@ -1,0 +1,79 @@
+<template>
+  <scroll-view scroll-y class="mistake-scroll" bindscrolltolower="scrolltolower">
+    <view class="list-wrap">
+      <view wx:for="{{mistakeListData}}" wx:key="index" class="task-wrap">
+        <view class="task">
+          <view>{{index+1}}.</view>
+          <view class="ml5">
+            <view>{{item.content}}</view>
+            <view class="mt4">
+              <view class="fl blue">【参考答案】:</view>
+              <view>{{item.answer}}</view>
+            </view>
+            <view>
+              <view class="fl blue">【题目解析】:</view>
+              <view>{{item.analysis}}</view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <loading wx:if="{{mistakeLoading}}"></loading>
+      <view wx:if="{{hasMistakeData===false}}" class="no-data">暂无更多数据！</view>
+    </view>
+  </scroll-view>
+</template>
+<script>
+  import store from '../store'
+  import { createComponent } from '@mpxjs/core'
+  createComponent({
+    data: {
+      mistakeLoading: false,
+      mistakePage: 0
+    },
+    options: {
+      addGlobalClass: true
+    },
+    lifetimes: {
+      created: function () {
+        this.getMistakeListData()
+      }
+    },
+    computed: {
+      ...store.mapGetters(['mistakeListData', 'hasMistakeData'])
+    },
+    methods: {
+      ...store.mapActions(['getMistakeList']),
+      getMistakeListData () {
+        if (this.mistakeLoading) {
+          return
+        }
+        this.setData({ mistakeLoading: true })
+        this.getMistakeList({
+          mistakePage: ++this.mistakePage
+        }).then((data) => {
+        }).finally(() => {
+          this.setData({ mistakeLoading: false })
+        })
+      },
+      scrolltolower () {
+        this.getMistakeListData()
+      }
+    }
+    
+  })
+</script>
+
+<script type="application/json">
+  {
+    "component": true,
+    "usingComponents": {
+      "loading": "../components/loading",
+      "van-row": "@vant/weapp/dist/row/index",
+      "van-col": "@vant/weapp/dist/col/index"
+    }
+  }
+</script>
+
+<style lang="less">
+  
+</style>

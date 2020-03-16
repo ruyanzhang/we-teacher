@@ -1,0 +1,200 @@
+<template>
+  <loading wx:if="{{isLoading}}"></loading>
+  <view wx:else class="check">
+    <view class="check-head">
+        <view><text class="check-head-title">学生姓名：</text>{{checkReportData.studentName}}</view>
+        <view><text class="check-head-title">辅导内容：</text>{{checkReportData.topicDocName}}</view>
+        <view><text class="check-head-title">学科学段：</text>{{checkReportData.topCourseName}}·{{checkReportData.gradeName}}</view>
+        <view><text class="check-head-title">上课时间：</text>{{checkReportData.lessonStartDate}}~{{checkReportData.lessonEndDate}}</view>
+      </view>
+      <view class="check-block">
+        <view class="check-block-title">课堂风采</view>
+        <view class="flex flex-jsb flex-wrap mt10">
+          <view wx:for="{{checkReportData.imageUrls}}" wx:key="index" class="img-wrap">
+            <image src="{{ item.url }}" mode="widthFix" bindtap="imgShow(item.url)"></image>
+          </view>
+          <view class="img-empty"></view>
+          <view class="img-empty"></view>
+        </view>
+      </view>
+      <view class="check-block">
+        <view class="check-block-title">上次课作业</view>
+        <view>
+          <view class="flex flex-ac mt10">
+            <view>总题数</view>
+            <view class="flex1">
+              <view style="width:{{checkReportData.lastWorkSubjectNum+'%'}}" class="flex1 last-value yellow">{{checkReportData.lastWorkSubjectNum}}</view>
+            </view>
+          </view>
+          <view class="flex flex-ac mt4">
+            <view>完成数</view>
+            <view class="flex1">
+              <view style="width:{{checkReportData.lastWorkSubjectFinishNum+'%'}}" class="flex1 last-value blue">{{checkReportData.lastWorkSubjectFinishNum}}</view>
+            </view>
+          </view>
+          <view class="flex flex-ac mt4">
+            <view>正确数</view>
+            <view class="flex1">
+              <view style="width:{{checkReportData.lastWorkSubjectRightNum+'%'}}" class="flex1 last-value green">{{checkReportData.lastWorkSubjectRightNum}}</view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="check-block">
+        <view class="check-block-title">知识点掌握情况</view>
+        <view>
+          <view wx:for="{{checkReportData.knowledgeDTOs}}" wx:key="index" class="mt10">
+            <view class="mb14">{{item.knowledgeName}}：</view>
+            <view>
+              <van-slider disabled
+              value="{{item.subjectRightNum}}" 
+              min="0" max="100"></van-slider>
+            </view>
+            <view class="flex flex-jsb slider-text">
+              <text>差</text>
+              <text>中</text>
+              <text>优</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="check-block">
+        <view class="check-block-title">课堂表现</view>
+        <view class="mt10">
+          <text>主动专注：</text>
+          <van-rate value="{{checkReportData.activeFocus}}" readonly></van-rate>
+        </view>
+        <view class="mt10">
+          <text>勤思善问：</text>
+          <van-rate value="{{checkReportData.thinkAsk}}" readonly></van-rate>
+        </view>
+        <view class="mt10">
+          <text>习惯优良：</text>
+          <van-rate value="{{checkReportData.goodHabits}}" readonly></van-rate>
+        </view>
+      </view>
+      <view class="check-block">
+        <view class="check-block-title">老师的话</view>
+        <view class="mt10">{{checkReportData.teacherComment}}</view>
+      </view>
+      <view bindtap="imgHide" class="img-mask"
+      style="background-image:url({{curImgUrl}});display:{{imgIsShow}}"></view>
+  </view>
+</template>
+
+<script>
+  import store from '../store'
+  import { createPage } from '@mpxjs/core'
+  createPage({
+    data: {
+      isLoading: false,
+      curImgUrl: '',
+      imgIsShow: 'none'
+    },
+    computed: {
+      ...store.mapGetters(['checkReportData'])
+    },
+    methods: {
+      ...store.mapActions(['getCheckReport']),
+      getCheckReportData () {
+        this.setData({ isLoading: true })
+        this.getCheckReport().then((data) => {
+        }).finally(() => {
+          this.setData({ isLoading: false })
+        })
+      },
+      imgShow (url) {
+        this.setData({
+          curImgUrl: url,
+          imgIsShow: 'block'
+        })
+      },
+      imgHide () {
+        this.setData({
+          imgIsShow: 'none'
+        })
+      }
+    },
+    onReady () {
+      this.getCheckReportData()
+    }
+  })
+  
+</script>
+
+<script type="application/json">
+  {
+    "usingComponents": {
+      "loading": "../components/loading",
+      "check-subjuect": "../components/checkSubject",
+      "van-slider": "@vant/weapp/dist/slider/index",
+      "van-rate": "@vant/weapp/dist/rate/index",
+      "van-field": "@vant/weapp/dist/field/index",
+      "van-button": "@vant/weapp/dist/button/index"
+    }
+  }
+</script>
+
+<style lang="less">
+  .img-wrap{
+    width: 30%;
+    height: 100px;
+    overflow: hidden;
+    display: flex;
+    background-color: #eeeeee;
+    align-items: center;
+  }
+  .img-empty {
+    height: 0;
+    width: 30%;
+  }
+ .last-value{
+   border-top-right-radius: 5px;
+   border-bottom-right-radius: 5px;
+   font-size: 12px;
+   color: #fff;
+   padding: 4px 6px;
+   text-align: right;
+   margin-left: 10px;
+   &.yellow{
+     background-color: #ffb71b;
+   }
+   &.blue{
+     background-color: #5aaff1;
+   }
+   &.green{
+     background-color: #32daa8;
+   }
+ }
+  .img-mask{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0,0.5);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  
+  .send-button{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
+  
+  .slider-text{
+    margin-top: 14px;
+    font-size: 12px;
+    color: #666;
+  }
+
+  .checkTextarea{
+    height:70px;
+    border:1px solid #dddddd;
+    padding: 5px;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+</style>

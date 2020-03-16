@@ -1,0 +1,59 @@
+<template>
+  <view class="form-item">
+    <slot></slot>
+    <view class="error-message">{{ errorMessage }}</view>
+  </view>
+</template>
+<script>
+  import { createComponent } from '@mpxjs/core'
+  import form from './form?resolve'  
+  createComponent({
+    data: {
+      errorMessage: ''
+    },
+    options: {
+      addGlobalClass: true
+    },
+    relations: {
+      [form]: {
+        type: 'parent'
+      }
+    },
+    properties: {
+      prop: String
+    },
+    lifetimes: {
+      attached: function () {
+      },
+      moved: function () { },
+      detached: function () { },
+    },
+    methods: {
+      setErrorMessage(messageObject) {
+        this.setData({
+          errorMessage: messageObject[this.prop] && messageObject[this.prop].msg || ''
+        })
+      }
+    }
+  })
+</script>
+
+<script type="application/json">
+  {
+    "component": true
+  }
+</script>
+
+<style lang="less">
+  .form-item{
+    position: relative;
+    margin-bottom: 18px;
+  }
+  .error-message{
+    position: absolute;
+    bottom: -16px;
+    font-size: 12px;
+    color: #ee0a24;
+    left: 104px;
+  }
+</style>

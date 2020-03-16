@@ -1,0 +1,68 @@
+<template>
+  <from>
+    <slot></slot>
+  </from>
+</template>
+<script>
+  import { createComponent } from '@mpxjs/core'
+  import WxValidate from '../utils/WxValidate'
+  import formItem from './formItem?resolve'  
+  createComponent({
+    data: {
+    },
+    relations: {
+      [formItem]: {
+        type: 'child'
+      }
+    },
+    properties: {
+      formModel: {
+        type: Object,
+        value: {}
+      },
+      messages: Object,
+      rules: Object
+    },
+    lifetimes: {
+      attached: function () {
+        this.WxValidate = new WxValidate(this.rules, this.messages)
+      },
+      moved: function () { },
+      detached: function () { },
+    },
+    methods: {
+      changeErrorMessage(messages) {
+        return messages.reduce((result,item) => {
+          result[item.param] = item
+          return result
+        },{})
+      },
+      validate(prop) {
+        const isValid = this.WxValidate.checkForm(this.formModel)
+        const error = this.WxValidate.errorList
+        const errors = this.changeErrorMessage(error)
+        const nodes = this.getRelationNodes([formItem])
+        if(prop){
+          const node = nodes.find(item => item.prop==prop)
+          node && node.setErrorMessage(errors)
+        } else {
+          nodes.forEach((item) => {
+            item.setErrorMessage(errors)
+          })
+        }
+        if (!isValid) {
+          return false
+        } else {
+          return true
+        }
+      }
+    }
+    
+  })
+</script>
+
+<script type="application/json">
+  {
+    "component": true
+  }
+</script>

@@ -1,0 +1,127 @@
+@blue-color:#1989fa;
+@border-color:#dddddd;
+.w-100{width: 100%;}
+.tc{text-align: center;}
+.tr{text-align: right;}
+.ovh{overflow: hidden;}
+.fl{float: left;}
+.flex{display: flex;}
+.flex-ac{align-items:center;}
+.flex-jsb{justify-content: space-between;}
+.flex-ver{flex-direction: column;}
+.flex-wrap{flex-wrap: wrap;}
+.flex1{flex: 1;}
+.rel{position:relative;}
+.pab{position:absolute;}
+.plr10{padding-left: 10px;padding-right: 10px;}
+.ptb10{padding-top: 10px;padding-bottom: 10px;}
+.pb10{padding-bottom: 10px;}
+.mt4{margin-top: 4px;}
+.mt10{margin-top: 10px;}
+.mt20{margin-top: 20px;}
+.mb14{margin-bottom: 14px;}
+.ml5{margin-left: 5px;}
+.mlr-10{margin-left: -10px;margin-right: -10px;}
+.bg1{background-color: #f5f5f5;}
+.blue{color: @blue-color;}
+.border-bottom{border-bottom: 1px solid @border-color}
+
+.no-data{
+  text-align: center;
+  color: #999999;
+}
+
+//重置日历样式
+.calendar-wrap {
+  .elegant_color, .elegant_weekend-color, .elegant_handle-color, .elegant_week-color {
+    color: @blue-color;
+  }
+  .elegant_choosed, .elegant_today {
+    color: #ffffff;
+    background-color: @blue-color;
+  }
+}
+
+//tab
+.tab-wrap {
+  .van-tabs__line {
+    background-color: @blue-color!important;
+  }
+}
+
+//mistake
+.mistake-scroll {
+  height: calc(100vh - 44px);
+}
+.list-wrap{
+  padding:10px;
+}
+
+//task
+.task-wrap{
+  border-radius: 5px;
+  margin-bottom: 10px;
+  background-color: #ffffff;
+  &:last-child{
+    margin-bottom: 0;
+  }
+}
+.task{
+  padding: 10px;
+  display: flex;
+  align-items: flex-start;
+}
+.task-button{
+  display: inline-block;
+  font-size: 12px;
+  width: 60px;
+  height: 26px;
+  line-height: 26px;
+  text-align: center;
+  border: 1px solid @border-color;
+  margin-left: 14px;
+  &.active{
+    color: #ffffff;
+    border: 1px solid @blue-color;
+    background-color: @blue-color;
+  }
+}
+
+//check
+.check{
+  padding-bottom: 60px;
+}
+.check-head{
+  padding: 10px;
+  border-bottom: 1px solid #dddddd;
+}
+.check-head-title{
+  color: #999;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.check-block{
+  padding-left: 14px;
+  padding-right: 14px;
+  background-color: #fff;
+  margin-top: 16px;
+  overflow: hidden;
+}
+.check-block-title{
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  &:after{
+    display: block;
+    content: '';
+    height: 8px;
+    background: url(../images/check-title-bg.png) no-repeat;
+    background-size: 100%;
+  }
+}
+.check-block-sub-title{
+  color: #1989fa;
+  border-bottom: 1px solid #dddddd;
+  margin-bottom: 5px;
+}

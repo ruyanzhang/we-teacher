@@ -1,0 +1,139 @@
+<template>
+  <scroll-view scroll-y class="mistake-scroll" bindscrolltolower="scrolltolower" lower-threshold="100">
+    <view class="list-wrap">
+      <view wx:for="{{reportListData}}" wx:key="{{index}}" class="list-item" bindtap="goToReport(item.hasCheck)">
+        <view class="list-name">{{item.classCourseName}}</view>
+        <view class="flex flex-ac flex-jsb">
+          <view>
+            <view>{{item.studentName}}</view>
+            <view class="list-time">{{item.lessonTime}}</view>
+          </view>
+          <view class="list-date">
+            <view>{{item.submitDateDay}}</view>
+            <view>{{item.submitDateTime}} 提交</view>
+          </view>
+        </view>
+        <view class="list-comment" wx:if="{{item.hasCheck}}">
+          <image class="list-comment-head" src="../images/comment-user-icon.png"></image>
+          <view class="flex1">
+            <van-rate value="{{ item.score }}" readonly/>
+            <view>老师评价：{{item.evaluation}}</view>
+          </view>
+        </view>
+      </view>
+      <loading wx:if="{{mistakeReportLoading}}"></loading>
+      <view wx:if="{{hasReportData===false}}" class="no-data">暂无更多数据！</view>
+    </view>
+  </scroll-view>
+</template>
+<script>
+  import store from '../store'
+  import mpx, { createComponent } from '@mpxjs/core'
+  createComponent({
+    data: {
+      mistakeReportLoading: false,
+      reportPage: 0
+    },
+    properties: {
+    },
+    options: {
+      addGlobalClass: true
+    },
+    lifetimes: {
+      created: function () {
+        this.getReportListData()
+      }
+    },
+    computed: {
+      ...store.mapGetters(['reportListData', 'hasReportData'])
+    },
+    methods: {
+      ...store.mapActions(['getReportList']),
+      getReportListData () {
+        if (this.mistakeReportLoading) {
+          return
+        }
+        this.setData({ mistakeReportLoading: true })
+        this.getReportList({
+          reportPage: ++this.reportPage
+        }).then((data) => {
+        }).finally(() => {
+          this.setData({ mistakeReportLoading: false })
+        }) 
+      },
+      scrolltolower () {
+        this.getReportListData()
+      },
+      goToReport (bool) {
+        if (bool) {
+          mpx.navigateTo({
+            url: 'report'
+          })
+        } else {
+          mpx.navigateTo({
+            url: 'check'
+          })
+        }
+      }
+    }  
+  })
+</script>
+
+<script type="application/json">
+  {
+    "component": true,
+    "usingComponents": {
+      "loading": "../components/loading"
+    }
+  }
+</script>
+
+<style lang="less">
+  .list-item{
+    background-color: #fff;
+    border-radius: 5px;
+    overflow: hidden;
+    padding: 12px 8px;
+    margin-bottom: 10px;
+    &:hover{
+      background-color: #e0f1fb;
+    }
+  }
+  .list-name{
+    font-size: 16px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .list-time{
+    color: #909090;
+    font-size: 12px;
+  }
+  .list-date{
+    font-size: 12px;
+    padding-left: 4px;
+    text-align: right;
+    border-left: 1px solid #bbb;
+    line-height: 1.2;
+    color: #909090;
+  }
+  .list-comment{
+    border-top: 1PX solid #eef1f2;
+    padding-top: 12px;
+    padding-left:4px;
+    padding-bottom:4px;
+    margin-top: 12px;
+    display: flex;
+    align-items: flex-start;
+  }
+  .list-comment-head{
+    width: 14px;
+    height: 16px;
+    background: url(../images/comment-user-icon.png) no-repeat center;
+    background-size: 100%;
+    margin-right: 7px;
+  }
+  .list-comment-head-con{
+    overflow: hidden;
+  }
+</style>

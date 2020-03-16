@@ -1,0 +1,112 @@
+<template>
+  <view class="login-warp">
+    <form-box class="formBox" wx:ref="formBox" formModel="{{formModel}}" rules="{{rules}}" messages="{{messages}}">
+      <form-item prop="username">
+        <van-field
+          name="username"
+          id="username"
+          value="{{ formModel.username }}"
+          required
+          label="用户名"
+          placeholder="请输入用户名"
+          border="{{ false }}"
+          bind:input="changeInputValue"
+        />
+      </form-item>
+      <form-item prop="password">
+        <van-field
+          name="password"
+          id="password"
+          value="{{ formModel.password }}"
+          type="password"
+          label="密码"
+          placeholder="请输入密码"
+          required
+          border="{{ false }}"
+          bind:input="changeInputValue"
+        />
+      </form-item>      
+      <van-button type="info" bind:click="submitForm" custom-class="w-100 mt10" loading="{{ submitLoading }}" loading-text="提交中...">提交</van-button>
+    </form-box>
+  </view>
+</template>
+
+<script>
+  import store from '../store'
+  import mpx, { createPage } from '@mpxjs/core'
+  import inputMixin from '../mixin/input'
+  createPage({
+    onLoad () {
+    },
+    mixins: [inputMixin],
+    data: {
+      submitLoading: false,
+      formModel: {
+        username: '',
+        password: '',
+      },
+      rules: {
+        username: {
+          required: true
+        },
+        password: {
+          required: true,
+          rangelength: [6, 20]
+        },
+      },
+      messages: {
+        username: {
+          required: '用户名不能为空'
+        },
+        password: {
+          required: '密码不能为空',
+          rangelength: '长度需在6~20个字符。'
+        }
+      }
+    },
+    methods: {
+      ...store.mapActions(['login']),
+      submitForm() {
+        if(!this.$refs.formBox.validate()){
+          return
+        }
+        this.setData({submitLoading: true})
+        this.login(this.formModel).then((data)=>{
+          mpx.switchTab({
+            url: 'home'
+          })
+        }).finally(() => {
+          this.setData({submitLoading: false})
+        })
+      }
+    }
+  })
+</script>
+
+<script type="application/json">
+  {
+    "usingComponents": {
+      "van-field": "@vant/weapp/dist/field/index",
+      "van-button": "@vant/weapp/dist/button/index",
+      "form-box": "../components/form",
+      "form-item": "../components/formItem"
+    }
+  }
+</script>
+
+<style lang="less">
+  .login-warp{
+    padding: 0 20px;
+    height: 100vh;
+    background: url("../images/logo-bg.png") no-repeat;
+    background-size: cover;
+    display: flex;
+    &>.formBox{
+      width: 100%;
+      margin: auto;
+    }
+    .ivu-btn{
+      width: 100%;
+    }
+  }
+</style>

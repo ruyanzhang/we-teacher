@@ -1,0 +1,161 @@
+<template>
+  <van-toast id="van-toast" />
+  <loading wx:if="{{isLoading}}"></loading>
+  <view wx:elif="{{notCheckReportListData}}" class="check">
+    <view class="check-head">
+      <view><text class="check-head-title">学生姓名：</text>{{notCheckReportListData.studentName}}</view>
+      <view><text class="check-head-title">辅导内容：</text>{{notCheckReportListData.topicDocName}}</view>
+      <view><text class="check-head-title">学科学段：</text>{{notCheckReportListData.topCourseName}}·{{notCheckReportListData.gradeName}}</view>
+      <view><text class="check-head-title">上课时间：</text>{{notCheckReportListData.lessonStartDate}}~{{notCheckReportListData.lessonEndDate}}</view>
+    </view>
+    <view class="check-block">
+      <view class="check-block-title">本课轨迹记录</view>
+      <check-subjuect bindselectsubject="selectSubject" 
+      subjects="{{notCheckReportListData.lastHomeworkSubjectLogDTOs}}"></check-subjuect>
+    </view>
+    <view class="check-block">
+      <view class="check-block-title">知识点掌握情况</view>
+      <view wx:for="{{notCheckReportListData.knowledgeDTOs}}" wx:key="index" class="mt10">
+        <view class="mb14">{{item.knowledgeName}}：</view>
+        <view>
+          <van-slider bind:change="changeSlider" data-index="{{index}}"
+          value="{{item.subjectRightNum}}" 
+          min="0" max="100"></van-slider>
+        </view>
+        <view class="slider-text flex flex-jsb">
+          <text>差</text>
+          <text>中</text>
+          <text>优</text>
+        </view>
+      </view>
+    </view>
+    <view class="check-block">
+      <view class="check-block-title">课堂表现</view>
+      <view class="mt10">
+        <text>主动专注：</text>
+        <van-rate data-prop="activeFocus"
+        value="{{notCheckReportListData.activeFocus}}" bind:change="changeRate"></van-rate>
+      </view>
+      <view  class="mt10">
+        <text>勤思善问：</text>
+        <van-rate data-prop="thinkAsk"
+        value="{{notCheckReportListData.thinkAsk}}" bind:change="changeRate"></van-rate>
+      </view>
+      <view  class="mt10">
+        <text>习惯优良：</text>
+        <van-rate data-prop="goodHabits"
+        value="{{notCheckReportListData.goodHabits}}" bind:change="changeRate"></van-rate>
+      </view>
+    </view>
+    <view class="check-block">
+      <view class="check-block-title">老师的话</view>
+      <textarea  class="w-100 mt10 checkTextarea" placeholder="请向家长反馈学生的课堂表现，针对学生可提升的地方提出解决方案，并告知家长配合的方向"
+      bindblur="changeTextarea"
+      value="{{notCheckReportListData.teacherComment}}"></textarea>
+      <view class="tr">请至少输入10个字</view>
+    </view>
+    <van-button wx:if="{{isSendLoading}}" type="info" class="send-button" block>提交中...</van-button>
+    <van-button wx:if="{{isShowButton}}" type="info" class="send-button" block bindtap="goToReport">提交</van-button>
+  </view>
+</template>
+
+<script>
+  import store from '../store'
+  import { createPage } from '@mpxjs/core'
+  import Toast from '@vant/weapp/dist/toast/toast'
+  createPage({
+    data: {
+      isLoading: false,
+      isSendLoading: false,
+      isShowButton: true,
+      notCheckReportListData: null
+    },
+    computed: {
+      ...store.mapGetters(['notCheckReportList'])
+    },
+    methods: {
+      ...store.mapActions(['getNotCheckReport', 'sendReport']),
+      getNotCheckReportData () {
+        this.setData({ isLoading: true })
+        this.getNotCheckReport().then((data) => {
+          this.notCheckReportListData = JSON.parse(JSON.stringify(data.data))
+        }).finally(() => {
+          this.setData({ isLoading: false })
+        })
+      },
+      changeRate (e) {
+        const prop = `notCheckReportListData.${e.target.dataset.prop}`
+        this.setData({
+          [prop]: e.detail
+        })
+      },
+      changeSlider (e) {
+        const prop = `notCheckReportListData.knowledgeDTOs[${e.target.dataset.index}].subjectRightNum`
+        this.setData({
+          [prop]: e.detail
+        })
+      },
+      selectSubject (e) {
+        const prop = `notCheckReportListData.lastHomeworkSubjectLogDTOs[${e.detail.index}].type`
+        this.setData({
+          [prop]: e.detail.type
+        })
+      },
+      changeTextarea (e) {
+        const prop = `notCheckReportListData.teacherComment`
+        this.setData({
+          [prop]: e.detail.value
+        })
+      },
+      goToReport () {
+        this.setData({ isSendLoading: true })
+        this.sendReport(this.notCheckReportListData).then((data) => {
+          Toast.success('提交成功！')
+          this.setData({ isShowButton: false })
+        }).finally(() => {
+          this.setData({ isSendLoading: false })
+        })
+      }
+    },
+    onReady () {
+      this.getNotCheckReportData()
+    }
+  })
+  
+</script>
+
+<script type="application/json">
+  {
+    "usingComponents": {
+      "loading": "../components/loading",
+      "check-subjuect": "../components/checkSubject",
+      "van-slider": "@vant/weapp/dist/slider/index",
+      "van-rate": "@vant/weapp/dist/rate/index",
+      "van-field": "@vant/weapp/dist/field/index",
+      "van-button": "@vant/weapp/dist/button/index",
+      "van-toast": "@vant/weapp/dist/toast/index"
+    }
+  }
+</script>
+
+<style lang="less">
+  .send-button{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
+  
+  .slider-text{
+    margin-top: 14px;
+    font-size: 12px;
+    color: #666;
+  }
+
+  .checkTextarea{
+    height:70px;
+    border:1px solid #dddddd;
+    padding: 5px;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+</style>

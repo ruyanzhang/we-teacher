@@ -1,0 +1,15 @@
+{
+  "compileType": "miniprogram",
+  "setting": {
+    "newFeature": true,
+    "urlCheck": true,
+    "es6": false,
+    "postcss": true,
+    "minified": false,
+    "autoAudits": false
+  },
+  "appid": "wx3dc5238f01f9a75d",
+  "projectname": "mpx-teacher",
+  "description": "A mpx project",
+  "condition": {}
+}

@@ -1,0 +1,30 @@
+<template>
+  <view class="loading-wrap">
+    <van-loading color="#1989fa" size="24px" vertical>加载中...</van-loading>
+  </view>
+</template>
+<script>
+  import { createComponent } from '@mpxjs/core'
+  createComponent({
+    data: {
+    },
+    methods: {
+    }
+  })
+</script>
+
+<script type="application/json">
+  {
+    "component": true,
+    "usingComponents": {
+      "van-loading": "@vant/weapp/dist/loading/index"
+    }
+  }
+</script>
+
+<style lang="less">
+  .loading-wrap{
+    padding: 30px 0;
+    text-align: center;
+  }
+</style>

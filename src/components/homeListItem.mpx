@@ -1,0 +1,79 @@
+<template>
+  <view class="course-item">
+    <view class="flex flex-ac flex-jsb">
+      <view class="course-item-name">{{item.classCourseName}}</view>
+      <view>{{timeFrom}}~{{timeTo}}</view>
+    </view>
+    <view class="flex flex-ac flex-jsb">
+      <text wx:if="{{item.classroomStatus===0}}" class="course-item-label">待备课</text>
+      <text wx:elif="{{item.classroomStatus===1}}"  class="course-item-label course-item-blueLabel">已备课</text>
+      <text wx:elif="{{item.classroomStatus===2}}" class="course-item-label">待反馈</text>
+      <text wx:elif="{{item.classroomStatus===3}}" class="course-item-label course-item-greenLabel">已反馈</text>
+      <view class="course-item-position">{{item.subschoolName}}{{item.classroomName}}</view>
+    </view>
+  </view>
+</template>
+<script>
+  import { createComponent } from '@mpxjs/core'
+  import moment from 'moment'
+  createComponent({
+    data: {
+    },
+    computed: {
+      timeFrom: function () {
+        return this.moment(this.item.timeFrom).format('HH:mm')
+      },
+      timeTo: function () {
+        return this.moment(this.item.timeTo).format('HH:mm')
+      }
+    },
+    options: {
+      addGlobalClass: true
+    },
+    properties: {
+      item: {
+        type: Object,
+        value: ''
+      }
+    },
+    methods: {
+      moment: moment
+    }
+  })
+</script>
+
+<script type="application/json">
+  {
+    "component": true
+  }
+</script>
+
+<style lang="less">
+  .course-item{
+    padding: 14px 16px;
+    border-bottom: 1px solid #eef1f2;
+    background-color: #fff;
+  }
+  .course-item-name{
+    font-size: 16px;
+    color: #222;
+  }
+  .course-item-label{
+    color: #ff6e0e;
+    font-size: 12px;
+    border: 1px solid #ff6e0e;
+    border-radius: 3px;
+    padding: 0 2px;
+  }
+  .course-item-blueLabel{
+    color: #1e98e2;
+    border-color: #1e98e2;
+  }
+  .course-item-greenLabel{
+    color:#22ac38;
+    border-color:#22ac38;
+  }
+  .course-item-position{
+    color: #999;
+  }
+</style>

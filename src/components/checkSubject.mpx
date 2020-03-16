@@ -1,0 +1,47 @@
+<template>
+  <view wx:for="{{subjects}}" wx:key="index" class="task border-bottom check-task">
+    <view>{{index+1}}.</view>
+    <view class="ml5 flex1">
+      <view>{{item.content}}</view>
+      <view><view class="fl blue">【参考答案】:</view><view>{{item.answer}}</view></view>
+      <view><view class="fl blue">【题目解析】:</view><view>{{item.analysis}}</view></view>
+      <view class="mt10 tr">
+        <text class="task-button {{item.type==1 ? 'active' : ''}}" bindtap="selectSubject(index, 1)">错题</text>
+        <text class="task-button {{item.type==2 ? 'active' : ''}}" bindtap="selectSubject(index, 2)">未用</text>
+      </view>
+    </view>
+  </view>
+</template>
+<script>
+  import { createComponent } from '@mpxjs/core'
+  createComponent({
+    data: {
+    },
+    properties: {
+      subjects: {
+        type: null,
+        value: []
+      }
+    },
+    options: {
+      addGlobalClass: true
+    },
+    methods: {
+      selectSubject (index, type) {
+        this.triggerEvent('selectsubject', { index, type })
+      }
+    }
+  })
+</script>
+
+<script type="application/json">
+  {
+    "component": true
+  }
+</script>
+
+<style lang="less">
+  .check-task{
+    padding: 10px 0;
+  }
+</style>
