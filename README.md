@@ -11,6 +11,9 @@ npm i
 # for dev
 npm run watch
 
+# for look
+在微信开发工具导入目录路径：'dist/wx'，即可在开发工具上查看
+
 # for online
 npm run product
 ```

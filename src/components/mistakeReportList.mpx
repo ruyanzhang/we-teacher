@@ -1,7 +1,7 @@
 <template>
   <scroll-view scroll-y class="mistake-scroll" bindscrolltolower="scrolltolower" lower-threshold="100">
     <view class="list-wrap">
-      <view wx:for="{{reportListData}}" wx:key="{{index}}" class="list-item" bindtap="goToReport(item.hasCheck)">
+      <view wx:for="{{reportListData}}" wx:key="index" class="list-item" bindtap="goToReport(item.hasCheck)">
         <view class="list-name">{{item.classCourseName}}</view>
         <view class="flex flex-ac flex-jsb">
           <view>
