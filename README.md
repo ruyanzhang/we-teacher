@@ -1,6 +1,6 @@
 # mpx-teacher
 
-> we-teacher
+> A mpx project
 
 ## Dev
 
@@ -16,5 +16,5 @@ npm run product
 ```
 
 须知vant-weapp
-- 本产品现只支持微信小程序；
+- 本产品暂时只支持微信小程序；
 - 本产品技术栈是 mpx(vue) + vant-weapp；
