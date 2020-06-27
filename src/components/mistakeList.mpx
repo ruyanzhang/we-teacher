@@ -67,9 +67,7 @@
   {
     "component": true,
     "usingComponents": {
-      "loading": "../components/loading",
-      "van-row": "@vant/weapp/dist/row/index",
-      "van-col": "@vant/weapp/dist/col/index"
+      "loading": "../components/loading"
     }
   }
 </script>

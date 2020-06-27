@@ -1,15 +1,13 @@
 <template>
   <view class="mistake bg1">
-    <view class="tab-wrap tab-wrapper">
-      <van-tabs active="{{ active }}" sticky>
-        <van-tab title="学习报告">
-          <mistake-report-list></mistake-report-list>
-        </van-tab>
-        <van-tab title="错题集">
-          <mistake-list></mistake-list>
-        </van-tab>
-      </van-tabs>
-    </view>
+    <tabPane tabList="{{ tabList }}" bind:changeTap="changeTap">
+      <view slot="{{tabList[0].slot}}">
+        <mistake-report-list></mistake-report-list>
+      </view>
+      <view slot="{{tabList[1].slot}}">
+        <mistake-list></mistake-list>
+      </view>
+    </tabPane>
   </view>
 </template>
 
@@ -20,10 +18,20 @@
     onLoad () {
     },
     data: {
-      active: 0
+      tabList: [
+        {
+          name: '学习报告',
+          slot: 'report',
+          active: true
+        },
+        {
+          name: '错题集',
+          slot: 'mistake',
+          active: false
+        }
+      ]
     },
     methods: {
-      ...store.mapActions(['getReportList', 'getMistakeList', 'getMistakeCourse'])
     }
   })
   
@@ -32,8 +40,7 @@
 <script type="application/json">
   {
     "usingComponents": {
-      "van-tab": "@vant/weapp/dist/tab/index",
-      "van-tabs": "@vant/weapp/dist/tabs/index",
+      "tabPane": "../components/tabPane",
       "mistake-report-list": "../components/mistakeReportList",
       "mistake-list": "../components/mistakeList"
     }

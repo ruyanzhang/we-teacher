@@ -31,31 +31,46 @@
     </view>
     <view class="check-block">
       <view class="check-block-title">课堂表现</view>
-      <view class="mt10">
+      <view class="mt10 flex">
         <text>主动专注：</text>
-        <van-rate data-prop="activeFocus"
-        value="{{notCheckReportListData.activeFocus}}" bind:change="changeRate"></van-rate>
+        <rate
+          data-prop="activeFocus"
+          score="{{ notCheckReportListData.activeFocus }}"
+          hasHalfStar="{{ false }}"
+          bind:changeStar="changeRate"
+        >
+        </rate>
       </view>
-      <view  class="mt10">
+      <view  class="mt10 flex">
         <text>勤思善问：</text>
-        <van-rate data-prop="thinkAsk"
-        value="{{notCheckReportListData.thinkAsk}}" bind:change="changeRate"></van-rate>
+        <rate
+          data-prop="thinkAsk"
+          score="{{ notCheckReportListData.thinkAsk }}"
+          hasHalfStar="{{ false }}"
+          bind:changeStar="changeRate"
+        >
+        </rate>
       </view>
-      <view  class="mt10">
+      <view  class="mt10 flex">
         <text>习惯优良：</text>
-        <van-rate data-prop="goodHabits"
-        value="{{notCheckReportListData.goodHabits}}" bind:change="changeRate"></van-rate>
+        <rate
+          data-prop="goodHabits"
+          score="{{ notCheckReportListData.goodHabits }}"
+          hasHalfStar="{{ false }}"
+          bind:changeStar="changeRate"
+        >
+        </rate>
       </view>
     </view>
     <view class="check-block">
       <view class="check-block-title">老师的话</view>
       <textarea  class="w-100 mt10 checkTextarea" placeholder="请向家长反馈学生的课堂表现，针对学生可提升的地方提出解决方案，并告知家长配合的方向"
-      bindblur="changeTextarea"
+      bindinput="changeTextarea"
       value="{{notCheckReportListData.teacherComment}}"></textarea>
       <view class="tr">请至少输入10个字</view>
     </view>
-    <van-button wx:if="{{isSendLoading}}" type="info" class="send-button" block>提交中...</van-button>
-    <van-button wx:if="{{isShowButton}}" type="info" class="send-button" block bindtap="goToReport">提交</van-button>
+    <button wx:if="{{isSendLoading}}" class="primary-button w-100 send-button">提交中...</button>
+    <button wx:if="{{isShowButton}}" class="primary-button w-100 send-button" bindtap="goToReport">提交</button>
   </view>
 </template>
 
@@ -86,7 +101,7 @@
       changeRate (e) {
         const prop = `notCheckReportListData.${e.target.dataset.prop}`
         this.setData({
-          [prop]: e.detail
+          [prop]: e.detail.score
         })
       },
       changeSlider (e) {
@@ -130,9 +145,8 @@
       "loading": "../components/loading",
       "check-subjuect": "../components/checkSubject",
       "van-slider": "@vant/weapp/dist/slider/index",
-      "van-rate": "@vant/weapp/dist/rate/index",
+      "rate": "../components/rate/index",
       "van-field": "@vant/weapp/dist/field/index",
-      "van-button": "@vant/weapp/dist/button/index",
       "van-toast": "@vant/weapp/dist/toast/index"
     }
   }

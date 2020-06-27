@@ -14,15 +14,15 @@
           </view>
         </view>
         <view class="list-comment" wx:if="{{item.hasCheck}}">
-          <image class="list-comment-head" src="../images/comment-user-icon.png"></image>
+          <image class="list-comment-head mt4" src="../images/comment-user-icon.png"></image>
           <view class="flex1">
-            <van-rate value="{{ item.score }}" readonly/>
+            <rate score="{{ item.score }}" hasHalfStar="{{ false }}" isStarEdit="{{ false }}"></rate>
             <view>老师评价：{{item.evaluation}}</view>
           </view>
         </view>
       </view>
       <loading wx:if="{{mistakeReportLoading}}"></loading>
-      <view wx:if="{{hasReportData===false}}" class="no-data">暂无更多数据！</view>
+      <view wx:else="{{hasReportData===false}}" class="no-data">暂无更多数据！</view>
     </view>
   </scroll-view>
 </template>
@@ -83,7 +83,8 @@
   {
     "component": true,
     "usingComponents": {
-      "loading": "../components/loading"
+      "loading": "../components/loading",
+      "rate": "../components/rate/index"
     }
   }
 </script>

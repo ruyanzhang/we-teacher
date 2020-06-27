@@ -60,17 +60,17 @@
       </view>
       <view class="check-block">
         <view class="check-block-title">课堂表现</view>
-        <view class="mt10">
+        <view class="mt10 flex">
           <text>主动专注：</text>
-          <van-rate value="{{checkReportData.activeFocus}}" readonly></van-rate>
+          <rate score="{{ checkReportData.activeFocus }}" hasHalfStar="{{ false }}" isStarEdit="{{ false }}"></rate>
         </view>
-        <view class="mt10">
+        <view class="mt10 flex">
           <text>勤思善问：</text>
-          <van-rate value="{{checkReportData.thinkAsk}}" readonly></van-rate>
+          <rate score="{{ checkReportData.thinkAsk }}" hasHalfStar="{{ false }}" isStarEdit="{{ false }}"></rate>
         </view>
-        <view class="mt10">
+        <view class="mt10 flex">
           <text>习惯优良：</text>
-          <van-rate value="{{checkReportData.goodHabits}}" readonly></van-rate>
+          <rate score="{{ checkReportData.goodHabits }}" hasHalfStar="{{ false }}" isStarEdit="{{ false }}"></rate>
         </view>
       </view>
       <view class="check-block">
@@ -128,9 +128,7 @@
       "loading": "../components/loading",
       "check-subjuect": "../components/checkSubject",
       "van-slider": "@vant/weapp/dist/slider/index",
-      "van-rate": "@vant/weapp/dist/rate/index",
-      "van-field": "@vant/weapp/dist/field/index",
-      "van-button": "@vant/weapp/dist/button/index"
+      "rate": "../components/rate/index"
     }
   }
 </script>

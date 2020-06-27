@@ -1,31 +1,27 @@
 <template>
   <view class="calendar-wrap">
-    <calendar calendarConfig="{{ calendarConfig }}" bind:afterTapDay="afterTapDay"
-    bind:whenChangeMonth="whenChangeMonth"
-    ></calendar>
+    <calendar id="Calendar" bind:select="selectDay" bind:selectMonth="selectMonth"></Calendar>
   </view>
-  <view class="tab-wrap">
-    <van-tabs active="{{ active }}">
-      <van-tab title="日课程" class="tab">
-        <loading wx:if="{{getDayLoading}}"></loading>
+  <tabPane tabList="{{ tabList }}" bind:changeTap="changeTap">
+    <view slot="{{tabList[0].slot}}">
+      <loading wx:if="{{getDayLoading}}"></loading>
+      <block wx:else>
+        <no-data wx:if="{{hasDayData}}" text="当前日期无排课"></no-data>
         <block wx:else>
-          <no-data wx:if="{{hasDayData}}" text="当前日期无排课"></no-data>
-          <block wx:else>
-            <home-list-item wx:for="{{dayListData}}" wx:key="index" item="{{ item }}"></home-list-item>
-          </block>
+          <home-list-item wx:for="{{dayListData}}" wx:key="index" item="{{ item }}"></home-list-item>
         </block>
-      </van-tab>
-      <van-tab title="月课程" class="tab">
-        <loading wx:if="{{getMonthLoading}}"></loading>
+      </block>
+    </view>
+    <view slot="{{tabList[1].slot}}">
+      <loading wx:if="{{getMonthLoading}}"></loading>
+      <block wx:else>
+        <no-data wx:if="{{hasMonthData}}" text="当前月无排课"></no-data>
         <block wx:else>
-          <no-data wx:if="{{hasMonthData}}" text="当前月无排课"></no-data>
-          <block wx:else>
-            <home-list-item wx:for="{{monthListData}}" wx:key="index" item="{{ item }}"></home-list-item>
-          </block>
+          <home-list-item wx:for="{{monthListData}}" wx:key="index" item="{{ item }}"></home-list-item>
         </block>
-      </van-tab>
-    </van-tabs>
-  </view>
+      </block>
+    </view>
+  </tabPane>
 </template>
 
 <script>
@@ -36,13 +32,22 @@ createPage({
   onLoad () {
   },
   data: {
-    calendarConfig: {
-      theme: 'elegant',
-      defaultDay: true
-    },
-    active: 0,
-    getDayLoading: false,
-    getMonthLoading: false
+    tabList: [
+      {
+        name: '日课程',
+        slot: 'day',
+        active: false
+      },
+      {
+        name: '月课程',
+        slot: 'month',
+        active: true
+      }
+    ],
+    selectedDay: '',
+    selectedMonth: '',
+    getDayLoading: true,
+    getMonthLoading: true
   },
   computed: {
     ...store.mapGetters(['dayListData', 'monthListData']),
@@ -55,34 +60,29 @@ createPage({
   },
   methods: {
     ...store.mapActions(['getDayList', 'getMonthList']),
-    afterTapDay (e) {
-      const day = this.changeDay(e.detail)
-      this.goToGetDayList(day)
-    },
-    whenChangeMonth (e) {
-      const ym = e.detail.next
-      const month = this.changeMonth(ym)
-      this.goToGetMonthList(month)
-    },
     goToGetDayList (day) {
-      this.setData({ getDayLoading: true })
+      this.getDayLoading = true
       this.getDayList({ day }).then((data) => {
       }).finally(() => {
-        this.setData({ getDayLoading: false })
+        this.getDayLoading = false
       })
     },
     goToGetMonthList (month) {
-      this.setData({ getMonthLoading: true })
+      this.getMonthLoading = true
       this.getMonthList({ month }).then((data) => {
       }).finally(() => {
-        this.setData({ getMonthLoading: false })
+        this.getMonthLoading = false
       })
     },
-    changeDay (selectedDay) {
-      return `${selectedDay.year}-${selectedDay.month.toString().padStart(2, '0')}-${selectedDay.day.toString().padStart(2,'0')}`
+    selectDay (e) {
+      this.selectedDay = e.detail || ''
+      this.goToGetDayList(this.selectedDay)
     },
-    changeMonth (month) {
-      return `${month.year}-${month.month.toString().padStart(2, '0')}`
+    selectMonth (e) {
+      this.selectedMonth = e.detail || ''
+      this.goToGetMonthList(this.selectedMonth)
+    },
+    changeTap (e) {
     }
   },
   onReady () {
@@ -90,17 +90,6 @@ createPage({
       mpx.reLaunch({
         url: 'login'
       })
-    } else {
-      const selectedDay = this.calendar.getSelectedDay()[0]
-      const ym = this.calendar.getCurrentYM()
-      if (selectedDay) {
-        const day = this.changeDay(selectedDay)
-        this.goToGetDayList(day)
-      }
-      if (ym) {
-        const month = this.changeMonth(ym)
-        this.goToGetMonthList(month)
-      }
     }
   }
 })
@@ -114,8 +103,7 @@ createPage({
       "loading": "../components/loading",
       "no-data": "../components/noData",
       "home-list-item": "../components/homeListItem",
-      "van-tab": "@vant/weapp/dist/tab/index",
-      "van-tabs": "@vant/weapp/dist/tabs/index"
+      "tabPane": "../components/tabPane"
     }
   }
 </script>

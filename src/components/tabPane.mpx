@@ -1,0 +1,83 @@
+<template>
+  <view class="tab">
+    <view class="tab-title">
+      <view
+        wx:for="{{ list }}"
+        wx:key="index"
+        bindtap="changeTab(index)"
+        item="{{ item }}"
+        class="{{ item.active ? 'tab-title-item tab-title-item-cur' : 'tab-title-item' }}"
+      >
+        {{ item.name }}
+      </view>
+    </view>
+    <view class="tab-content">
+      <block wx:for="{{ list }}" wx:key="index">
+        <slot wx:if="{{item.active}}" name="{{item.slot}}"></slot>
+      </block>
+    </view>
+  </view>
+</template>
+<script>
+  import { createComponent } from '@mpxjs/core'
+  createComponent({
+    options: {
+      multipleSlots: true
+    },
+    data: {
+      list: []
+    },
+    properties: {
+      tabList: {
+        type: Array,
+        value: []
+      }
+    },
+    lifetimes: {
+      attached: function () {
+        this.list = JSON.parse(JSON.stringify(this.tabList))
+      }
+    },
+    methods: {
+      changeTab (index) {
+        this.list = this.list.map((item) => ({
+          ...item,
+          active: false
+        }))
+        this.list[index].active = true
+        this.triggerEvent('changeTap', index);
+      }
+    }
+  })
+</script>
+
+<script type="application/json">
+  {
+    "component": true
+  }
+</script>
+
+<style lang="less">
+  .tab-title {
+    display: flex
+  }
+  .tab-title-item {
+    flex-grow: 1;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+  }
+  .tab-title-item-cur {
+    position: relative;
+    &:after {
+      content: '';
+      position: absolute;
+      width: 100px;
+      transform: translateX(-50%);
+      bottom: 0;
+      left: 50%;
+      height: 3px;
+      background: #1989fa;
+    }
+  }
+</style>

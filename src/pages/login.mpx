@@ -1,23 +1,24 @@
 <template>
   <view class="login-warp">
-    <form-box class="formBox" wx:ref="formBox" formModel="{{formModel}}" rules="{{rules}}" messages="{{messages}}">
-      <form-item prop="username">
+    <view class="form-box">
+      <view class="form-item">
         <van-field
           name="username"
           id="username"
-          value="{{ formModel.username }}"
+          value="{{ username }}"
           required
           label="用户名"
           placeholder="请输入用户名"
           border="{{ false }}"
           bind:input="changeInputValue"
         />
-      </form-item>
-      <form-item prop="password">
+        <view class="error-message">{{ usernameError }}</view>
+      </view>
+      <view class="form-item">
         <van-field
           name="password"
           id="password"
-          value="{{ formModel.password }}"
+          value="{{ password }}"
           type="password"
           label="密码"
           placeholder="请输入密码"
@@ -25,58 +26,76 @@
           border="{{ false }}"
           bind:input="changeInputValue"
         />
-      </form-item>      
-      <van-button type="info" bind:click="submitForm" custom-class="w-100 mt10" loading="{{ submitLoading }}" loading-text="提交中...">提交</van-button>
-    </form-box>
+        <view class="error-message">{{ passwordError }}</view>
+      </view>
+      <view>
+        <button wx:if="{{ submitLoading }}" type="primary" class="primary-button w-100 mt10" loading="{{ submitLoading }}">提交中...</button>
+        <button wx:else type="primary" bindtap="submitForm" class="primary-button w-100 mt10">提交</button>
+      </view>
+    </view>
   </view>
 </template>
 
 <script>
   import store from '../store'
   import mpx, { createPage } from '@mpxjs/core'
-  import inputMixin from '../mixin/input'
   createPage({
     onLoad () {
     },
-    mixins: [inputMixin],
     data: {
       submitLoading: false,
-      formModel: {
-        username: '',
-        password: '',
-      },
-      rules: {
-        username: {
-          required: true
-        },
-        password: {
-          required: true,
-          rangelength: [6, 20]
-        },
-      },
-      messages: {
-        username: {
-          required: '用户名不能为空'
-        },
-        password: {
-          required: '密码不能为空',
-          rangelength: '长度需在6~20个字符。'
-        }
-      }
+      username: '',
+      password: '',
+      usernameError: '',
+      passwordError: ''
     },
     methods: {
       ...store.mapActions(['login']),
+      checkUserName () {
+        if (this.username === '') {
+          this.usernameError = '用户名不能为空'
+          return false
+        }
+        this.usernameError = ''
+        return true
+      },
+      checkPassWord () {
+        if (this.password === '') {
+          this.passwordError = '用户密码不能为空'
+          return false
+        } else if (!/^\d{6,20}$/.test(this.password)) {
+          this.passwordError = '用户密码必须是6~20个数字'
+          return false
+        }
+        this.passwordError = ''
+        return true
+      },
+      changeInputValue (e) {
+        this.setData({
+          [e.target.id]: e.detail
+        }, () => {
+         if (e.target.id === 'username') {
+           this.checkUserName(e.detail)
+         } else if (e.target.id === 'password') {
+           this.checkPassWord(e.detail)
+         }
+        })
+      },
       submitForm() {
-        if(!this.$refs.formBox.validate()){
+        if(!this.checkUserName() ||　!this.checkPassWord()){
           return
         }
-        this.setData({submitLoading: true})
-        this.login(this.formModel).then((data)=>{
+        this.submitLoading = true
+        
+        this.login({
+          username: this.username,
+          password: this.password
+        }).then((data)=>{
           mpx.switchTab({
             url: 'home'
           })
         }).finally(() => {
-          this.setData({submitLoading: false})
+          this.submitLoading = false
         })
       }
     }
@@ -86,10 +105,7 @@
 <script type="application/json">
   {
     "usingComponents": {
-      "van-field": "@vant/weapp/dist/field/index",
-      "van-button": "@vant/weapp/dist/button/index",
-      "form-box": "../components/form",
-      "form-item": "../components/formItem"
+      "van-field": "@vant/weapp/dist/field/index"
     }
   }
 </script>
@@ -101,12 +117,20 @@
     background: url("../images/logo-bg.png") no-repeat;
     background-size: cover;
     display: flex;
-    &>.formBox{
+    &>.form-box{
       width: 100%;
       margin: auto;
     }
-    .ivu-btn{
-      width: 100%;
-    }
+  }
+  .form-item{
+    position: relative;
+    margin-bottom: 18px;
+  }
+  .error-message{
+    position: absolute;
+    bottom: -16px;
+    font-size: 12px;
+    color: #ee0a24;
+    left: 104px;
   }
 </style>

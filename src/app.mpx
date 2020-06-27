@@ -31,9 +31,9 @@
       "navigationBarTextStyle": "black"
     },
     "tabBar": {
-      "backgroundColor": "#1989fa",
       "color": "#cccccc",
       "selectedColor": "#ffffff",
+      "backgroundColor": "#1989fa",
       "list": [
         {
           "pagePath": "pages/home",
@@ -54,11 +54,34 @@
 <script type="application/json" mode="ali">
   {
     "pages": [
-     "./pages/login"
+     "./pages/login",
+     "./pages/home",
+     "./pages/mistake",
+     "./pages/check",
+    "./pages/report"
     ],
     "window": {
       "navigationBarBackgroundColor": "#fff",
-      "navigationBarTitleText": "mpx备忘清单-ali"
+      "navigationBarTitleText": "WeChat"
+    },
+    "tabBar": {
+      "textColor": "#cccccc",
+      "selectedColor": "#ffffff",
+      "backgroundColor": "#1989fa",
+      "items": [
+        {
+          "pagePath": "pages/home",
+          "name": "课表",
+          "icon": "images/icon/time.png",
+          "activeIcon": "images/icon/time_select.png"
+        },
+        {
+          "pagePath": "pages/mistake",
+          "name": "错题集",
+          "icon": "images/icon/mistake.png",
+          "activeIcon": "images/icon/mistake_select.png"
+        }
+      ]
     }
   }
 </script>

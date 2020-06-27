@@ -1,0 +1,9 @@
+<view class="star-rate-panel">
+  <view class="star-list">
+    <block wx:for="{{starLists}}" wx:key="index">
+      <view bindtap="starChange" class="star-item " data-idx="{{index}}" data-score="{{item.value }}">
+        <view class="star-score {{item.status == 0 ?'':(item.status == 1 ? 'star-half': 'star-all')}}" data-idx="{{index}}" data-score="{{item.value }}"></view>
+      </view>
+    </block>
+  </view>
+</view>

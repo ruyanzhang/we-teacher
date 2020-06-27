@@ -20,15 +20,14 @@
   "author": "ruyanzhang <ru1zhang@21cn.com>",
   "license": "ISC",
   "dependencies": {
-    "@mpxjs/api-proxy": "^2.3.0",
-    "@mpxjs/core": "^2.3.0",
+    "@mpxjs/api-proxy": "^2.5.10",
+    "@mpxjs/core": "^2.5.20",
     "@vant/weapp": "^1.0.7",
-    "moment": "^2.24.0",
-    "vue": "^2.6.10"
+    "moment": "^2.24.0"
   },
   "devDependencies": {
     "@mpxjs/mock": "^2.3.4",
-    "@mpxjs/webpack-plugin": "^2.3.0",
+    "@mpxjs/webpack-plugin": "^2.5.25",
     "babel-core": "^6.26.0",
     "babel-eslint": "^10.0.1",
     "babel-loader": "^7.1.4",
