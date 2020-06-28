@@ -2,7 +2,7 @@
   <view class="calendar-wrap">
     <calendar id="Calendar" bind:select="selectDay" bind:selectMonth="selectMonth"></Calendar>
   </view>
-  <tabPane tabList="{{ tabList }}" bind:changeTap="changeTap">
+  <tabPane tabList="{{ tabList }}" active="{{ active }}" bind:changeTap="changeTap">
     <view slot="{{tabList[0].slot}}">
       <loading wx:if="{{getDayLoading}}"></loading>
       <block wx:else>
@@ -35,15 +35,14 @@ createPage({
     tabList: [
       {
         name: '日课程',
-        slot: 'day',
-        active: false
+        slot: 'day'
       },
       {
         name: '月课程',
-        slot: 'month',
-        active: true
+        slot: 'month'
       }
     ],
+    active: 0,
     selectedDay: '',
     selectedMonth: '',
     getDayLoading: true,
@@ -76,10 +75,12 @@ createPage({
     },
     selectDay (e) {
       this.selectedDay = e.detail || ''
+      this.active = 0
       this.goToGetDayList(this.selectedDay)
     },
     selectMonth (e) {
       this.selectedMonth = e.detail || ''
+      this.active = 1
       this.goToGetMonthList(this.selectedMonth)
     },
     changeTap (e) {

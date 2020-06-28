@@ -46,9 +46,16 @@
           <view wx:for="{{checkReportData.knowledgeDTOs}}" wx:key="index" class="mt10">
             <view class="mb14">{{item.knowledgeName}}：</view>
             <view>
-              <van-slider disabled
-              value="{{item.subjectRightNum}}" 
-              min="0" max="100"></van-slider>
+              <slider
+                disabled
+                left-icon="cancel"
+                right-icon="success_no_circle"
+                data-index="{{index}}"
+                value="{{item.subjectRightNum}}"
+                activeColor="#1989fa"
+                min="0"
+                max="100"
+              />
             </view>
             <view class="flex flex-jsb slider-text">
               <text>差</text>
@@ -127,7 +134,6 @@
     "usingComponents": {
       "loading": "../components/loading",
       "check-subjuect": "../components/checkSubject",
-      "van-slider": "@vant/weapp/dist/slider/index",
       "rate": "../components/rate/index"
     }
   }
@@ -182,12 +188,6 @@
     width: 100%;
   }
   
-  .slider-text{
-    margin-top: 14px;
-    font-size: 12px;
-    color: #666;
-  }
-
   .checkTextarea{
     height:70px;
     border:1px solid #dddddd;

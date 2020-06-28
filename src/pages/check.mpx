@@ -18,9 +18,16 @@
       <view wx:for="{{notCheckReportListData.knowledgeDTOs}}" wx:key="index" class="mt10">
         <view class="mb14">{{item.knowledgeName}}：</view>
         <view>
-          <van-slider bind:change="changeSlider" data-index="{{index}}"
-          value="{{item.subjectRightNum}}" 
-          min="0" max="100"></van-slider>
+          <slider
+            bindchange="changeSlider"
+            left-icon="cancel"
+            right-icon="success_no_circle"
+            data-index="{{index}}"
+            value="{{item.subjectRightNum}}"
+            activeColor="#1989fa"
+            min="0"
+            max="100"
+          />
         </view>
         <view class="slider-text flex flex-jsb">
           <text>差</text>
@@ -107,7 +114,7 @@
       changeSlider (e) {
         const prop = `notCheckReportListData.knowledgeDTOs[${e.target.dataset.index}].subjectRightNum`
         this.setData({
-          [prop]: e.detail
+          [prop]: e.detail.value
         })
       },
       selectSubject (e) {
@@ -144,7 +151,6 @@
     "usingComponents": {
       "loading": "../components/loading",
       "check-subjuect": "../components/checkSubject",
-      "van-slider": "@vant/weapp/dist/slider/index",
       "rate": "../components/rate/index",
       "van-field": "@vant/weapp/dist/field/index",
       "van-toast": "@vant/weapp/dist/toast/index"
@@ -159,12 +165,6 @@
     width: 100%;
   }
   
-  .slider-text{
-    margin-top: 14px;
-    font-size: 12px;
-    color: #666;
-  }
-
   .checkTextarea{
     height:70px;
     border:1px solid #dddddd;

@@ -6,14 +6,14 @@
         wx:key="index"
         bindtap="changeTab(index)"
         item="{{ item }}"
-        class="{{ item.active ? 'tab-title-item tab-title-item-cur' : 'tab-title-item' }}"
+        class="{{ actived === index ? 'tab-title-item tab-title-item-cur' : 'tab-title-item' }}"
       >
         {{ item.name }}
       </view>
     </view>
     <view class="tab-content">
       <block wx:for="{{ list }}" wx:key="index">
-        <slot wx:if="{{item.active}}" name="{{item.slot}}"></slot>
+        <slot wx:if="{{ actived === index}}" name="{{item.slot}}"></slot>
       </block>
     </view>
   </view>
@@ -24,27 +24,28 @@
     options: {
       multipleSlots: true
     },
-    data: {
-      list: []
+    data () {
+      return {
+        list: JSON.parse(JSON.stringify(this.tabList)),
+        actived: this.active
+      }
     },
     properties: {
       tabList: {
         type: Array,
         value: []
-      }
-    },
-    lifetimes: {
-      attached: function () {
-        this.list = JSON.parse(JSON.stringify(this.tabList))
+      },
+      active: {
+        type: Number,
+        value: 0,
+        observer: function(val) {
+          this.actived = val
+        }
       }
     },
     methods: {
       changeTab (index) {
-        this.list = this.list.map((item) => ({
-          ...item,
-          active: false
-        }))
-        this.list[index].active = true
+        this.actived = index
         this.triggerEvent('changeTap', index);
       }
     }
