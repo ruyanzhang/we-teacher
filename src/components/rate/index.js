@@ -2,7 +2,10 @@ Component({
   properties: {
     score: {
       type: Number,
-      value: 0
+      value: 0,
+      observer: function (val) {
+        this.starShow(val)
+      }
     },
     isStarEdit: { // 是否编辑
       type: Boolean,
@@ -11,11 +14,6 @@ Component({
     hasHalfStar: {  // 是否有半颗星
       type: Boolean,
       value: true
-    }
-  },
-  lifetimes: {
-    attached: function () {
-      this.starShow(this.data.score)
     }
   },
   data: {

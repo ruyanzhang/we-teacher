@@ -106,6 +106,7 @@
       getCheckReportData () {
         this.setData({ isLoading: true })
         this.getCheckReport().then((data) => {
+          console.log(data, 9999)
         }).finally(() => {
           this.setData({ isLoading: false })
         })

@@ -1,6 +1,6 @@
 <template>
   <view class="mistake bg1">
-    <tabPane tabList="{{ tabList }}" bind:changeTap="changeTap">
+    <tabPane tabList="{{ tabList }}">
       <view slot="{{tabList[0].slot}}">
         <mistake-report-list></mistake-report-list>
       </view>
@@ -21,15 +21,14 @@
       tabList: [
         {
           name: '学习报告',
-          slot: 'report',
-          active: true
+          slot: 'report'
         },
         {
           name: '错题集',
-          slot: 'mistake',
-          active: false
+          slot: 'mistake'
         }
-      ]
+      ],
+      active: 0
     },
     methods: {
     }
