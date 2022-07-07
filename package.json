@@ -23,7 +23,7 @@
     "@mpxjs/api-proxy": "^2.5.10",
     "@mpxjs/core": "^2.5.20",
     "@vant/weapp": "^1.0.7",
-    "moment": "^2.24.0"
+    "moment": "^2.29.4"
   },
   "devDependencies": {
     "@mpxjs/mock": "^2.3.4",
